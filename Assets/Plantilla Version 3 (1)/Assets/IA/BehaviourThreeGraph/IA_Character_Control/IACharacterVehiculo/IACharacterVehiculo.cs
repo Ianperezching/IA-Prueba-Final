@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class IACharacterVehiculo : IACharacterControl
 {
     protected CalculateDiffuse _CalculateDiffuse;
@@ -11,6 +11,8 @@ public class IACharacterVehiculo : IACharacterControl
     Vector3 positionWander;
     float FrameRate = 0;
     float Rate = 4;
+
+    public bool IsDrawGizmo;
     public override void LoadComponent()
     {
         base.LoadComponent();
@@ -48,7 +50,6 @@ public class IACharacterVehiculo : IACharacterControl
         }
     }
 
-
     public virtual void MoveToPosition(Vector3 pos)
     {
         agent.SetDestination(pos);
@@ -56,6 +57,8 @@ public class IACharacterVehiculo : IACharacterControl
     public virtual void MoveToEnemy()
     {
         if (AIEye.ViewEnemy == null) return;
+
+
         MoveToPosition(AIEye.ViewEnemy.transform.position);
     }
     public virtual void MoveToAllied()
@@ -75,7 +78,21 @@ public class IACharacterVehiculo : IACharacterControl
     {
         Vector3 randP = Random.insideUnitSphere * range;
         randP.y = transform.position.y;
-        return position + randP;
+        NavMeshHit navHit;
+
+        for (int i = 0; i < 20; i++)
+        {
+            if (NavMesh.SamplePosition(randP, out navHit, range, NavMesh.AllAreas))
+            {
+                return navHit.position;
+            }
+            else {
+                randP = Random.insideUnitSphere * range;
+                randP.y = transform.position.y;
+            }
+        }
+         
+        return position ;
     }
     public virtual void MoveToWander()
     {
@@ -98,16 +115,13 @@ public class IACharacterVehiculo : IACharacterControl
 
         MoveToPosition(positionWander);
     }
-
-    public virtual void Wander()
+    public void DrawGizmos()
     {
-        // Implementación básica de wander, puedes sobreescribir en clases hijas
-        Vector3 randomDirection = Random.insideUnitSphere * 5f;
-        randomDirection += transform.position;
-        UnityEngine.AI.NavMeshHit navHit;
-        if (UnityEngine.AI.NavMesh.SamplePosition(randomDirection, out navHit, 5f, -1))
-        {
-            agent.SetDestination(navHit.position);
-        }
+        if (!IsDrawGizmo) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, RangeWander);
+        Gizmos.DrawWireSphere(positionWander, 0.5f);
+        Gizmos.DrawLine(transform.position, positionWander);
     }
+
 }

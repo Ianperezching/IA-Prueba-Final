@@ -5,9 +5,9 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("MyAI/Move")]
 public class ActionWander : ActionNodeVehicle
 {
-    public override void OnStart()
+    public override void OnAwake()
     {
-        base.OnStart();
+        base.OnAwake();
     }
     public override TaskStatus OnUpdate()
     {
@@ -29,7 +29,6 @@ public class ActionWander : ActionNodeVehicle
                 if(_IACharacterVehiculo is IACharacterVehiculoZombie)
                 {
                     ((IACharacterVehiculoZombie)_IACharacterVehiculo).MoveToWander();
-                    
                 }
 
                 break;

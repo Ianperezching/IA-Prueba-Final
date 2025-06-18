@@ -5,7 +5,15 @@ using UnityEngine;
 public class IACharacterVehiculoVillager : IACharacterVehiculo
 {
     // Puedes personalizar el comportamiento si lo deseas
+    void Start()
+    {
+        this.LoadComponent();
+    }
+    public override void LoadComponent()
+    {
+        base.LoadComponent();
 
+    }
     public override void MoveToPosition(Vector3 pos)
     {
         base.MoveToPosition(pos);
@@ -20,9 +28,10 @@ public class IACharacterVehiculoVillager : IACharacterVehiculo
     {
         base.MoveToEvadEnemy();
     }
-
-    public override void Wander()
+    private void OnDrawGizmos()
     {
-        base.Wander();
+        if (!IsDrawGizmo) { return; }
+        base.DrawGizmos();
     }
+
 }

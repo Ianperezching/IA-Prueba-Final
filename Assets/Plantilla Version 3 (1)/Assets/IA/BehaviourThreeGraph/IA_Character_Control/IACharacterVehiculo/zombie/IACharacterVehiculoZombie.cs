@@ -31,7 +31,11 @@ public class IACharacterVehiculoZombie : IACharacterVehiculo
     }
     public override void MoveToEvadEnemy()
     {
-        base.MoveToEvadEnemy( );
+        base.MoveToEvadEnemy();
     }
-
+    private void OnDrawGizmos()
+    {
+        if(!IsDrawGizmo) { return; }
+        base.DrawGizmos();
+    }
 }

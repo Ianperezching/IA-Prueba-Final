@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class IACharacterActionsVillager : IACharacterActions
@@ -39,11 +40,5 @@ public class IACharacterActionsVillager : IACharacterActions
         if (AIEye.ViewAllie == null) return;
         _IACharacterVehiculo.MoveToAllied();
     }
-
-    // Deambular aleatoriamente
-    public void Wander()
-    {
-        if (_IACharacterVehiculo == null) return;
-        _IACharacterVehiculo.Wander();
-    }
+    
 }

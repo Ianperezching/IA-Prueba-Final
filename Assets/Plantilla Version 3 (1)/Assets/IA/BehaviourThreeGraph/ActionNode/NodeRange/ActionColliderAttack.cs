@@ -5,29 +5,43 @@ using BehaviorDesigner.Runtime.Tasks;
 [TaskCategory("MyAI/Range")]
 public class ActionColliderAttack : ActionNodeRange
 {
-    public override void OnStart()
+    public override void OnAwake()
     {
-        base.OnStart();
+        base.OnAwake();
     }
     public override TaskStatus OnUpdate()
     {
         if(_IACharacterVehiculo.AIEye.ViewEnemy==null)
           return TaskStatus.Failure;
-        if(_IACharacterVehiculo.AIEye is IAEyeShootAttack)
+
+        switch (_UnitGame)
         {
-            IAEyeShootAttack _IAEyeShootAttack = ((IAEyeShootAttack)_IACharacterVehiculo.AIEye);
-            if (_IAEyeShootAttack != null && _IAEyeShootAttack.AttackDataView.Sight)
-                return TaskStatus.Success;
-        }
-        else
-        if (_IACharacterVehiculo.AIEye is IAEyeAttack)
-        {
-            IAEyeAttack _IAEyeAttack = ((IAEyeAttack)_IACharacterVehiculo.AIEye);
-            if (_IAEyeAttack != null && _IAEyeAttack.AttackDataView.Sight)
-                return TaskStatus.Success;
+            case UnitGame.Zombie:
+                if (_IACharacterVehiculo.AIEye is IAEyeAttack)
+                {
+                    IAEyeAttack _IAEyeAttack = ((IAEyeAttack)_IACharacterVehiculo.AIEye);
+                    if (_IAEyeAttack != null && _IAEyeAttack.AttackDataView.Sight)
+                        return TaskStatus.Success;
+                }
+                break;
+            case UnitGame.Soldier:
+                if (_IACharacterVehiculo.AIEye is IAEyeShootAttack)
+                {
+                    IAEyeShootAttack _IAEyeShootAttack = ((IAEyeShootAttack)_IACharacterVehiculo.AIEye);
+                    if (_IAEyeShootAttack != null && _IAEyeShootAttack.AttackDataView.Sight)
+                        return TaskStatus.Success;
+                }
+                break;
+            case UnitGame.Villager:
+                break;
+            case UnitGame.golem:
+                break;
+            case UnitGame.None:
+                break;
+            default:
+                break;
         }
         
-
         return TaskStatus.Failure;
     }
 

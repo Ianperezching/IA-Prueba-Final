@@ -5,7 +5,7 @@ using UnityEngine;
 public class IACharacterActionsZombie : IACharacterActions
 {
 
-    public float FrameRate = 0;
+    float FrameRate = 0;
     public float Rate=1;
     public int damageZombie;
     private void Start()
@@ -28,8 +28,8 @@ public class IACharacterActionsZombie : IACharacterActions
             if (_IAEyeZombieAttack != null &&
                 _IAEyeZombieAttack.ViewEnemy != null)
             {
-                
                 _IAEyeZombieAttack.ViewEnemy.Damage(damageZombie, health);
+                Debug.Log("Attack a IAN: " + _IAEyeZombieAttack.ViewEnemy.health);
             }
             
         }
