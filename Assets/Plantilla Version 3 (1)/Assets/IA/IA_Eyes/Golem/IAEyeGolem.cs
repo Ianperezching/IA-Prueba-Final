@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class IAEyeVillager : IAEyeAttack
+public class IAEyeGolem : IAEyeAttack
 {
-    void Start()
+   void Start()
     {
         LoadComponent();
     }
