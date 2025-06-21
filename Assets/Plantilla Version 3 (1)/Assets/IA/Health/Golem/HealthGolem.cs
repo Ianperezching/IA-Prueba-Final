@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HealthGolem : healthHuman
+public class HealthGolem : Health
 {
     // Start is called before the first frame update
     void Start()

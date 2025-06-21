@@ -41,6 +41,12 @@ public class ActionNodeAttack : ActionNodeAction
                 }
 
                 break;
+                 case UnitGame.golem:
+                if (_IACharacterActions is IACharacterActionsGolem)
+                {
+                    ((IACharacterActionsGolem)_IACharacterActions).Attack();
+                }
+                break;
             case UnitGame.None:
                 break;
             default:

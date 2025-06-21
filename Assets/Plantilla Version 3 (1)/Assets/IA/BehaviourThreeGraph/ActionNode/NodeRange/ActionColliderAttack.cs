@@ -35,6 +35,15 @@ public class ActionColliderAttack : ActionNodeRange
             case UnitGame.Villager:
                 break;
             case UnitGame.golem:
+                if (_IACharacterVehiculo is IACharacterVehiculoGolem golem)
+                {
+                    if (golem.AIEye is IAEyeAttack)
+                    {
+                        IAEyeAttack _IAEyeAttack = ((IAEyeAttack)golem.AIEye);
+                        if (_IAEyeAttack != null && _IAEyeAttack.AttackDataView.Sight)
+                            return TaskStatus.Success;
+                    }
+                }
                 break;
             case UnitGame.None:
                 break;

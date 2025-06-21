@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class IAEyeGolem : IAEyeAttack
 {
-   void Start()
+   private void Start()
     {
         LoadComponent();
     }
 
-    void Update()
+    private void Update()
     {
         UpdateScan();
     }

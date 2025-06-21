@@ -40,6 +40,13 @@ public class ActionFollowEnemy : ActionNodeVehicle
                     ((IACharacterVehiculoSoldier)_IACharacterVehiculo).LookEnemy();
                 }
                 break;
+                case UnitGame.golem:
+                if (_IACharacterVehiculo is IACharacterVehiculoGolem)
+                {
+                    ((IACharacterVehiculoGolem)_IACharacterVehiculo).MoveToEnemy();
+                    ((IACharacterVehiculoGolem)_IACharacterVehiculo).LookEnemy();
+                }
+                break;
             case UnitGame.None:
                 break;
             default:
