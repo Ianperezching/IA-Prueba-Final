@@ -12,6 +12,13 @@ public enum UnitGame
     golem,
     None
 }
+public enum StateAnimator
+{
+    IdleWalkRun,
+    Attack,
+    Dead,
+    None
+}
 public class Health : MonoBehaviour
 {
     [Header("imageUI")]
@@ -36,7 +43,11 @@ public class Health : MonoBehaviour
     public bool Importal = false;
     public UnitGame _UnitGame;
     public bool IsCantView=true;
-
+    protected Animator animator;
+    public float TimeDestroy;
+    [Header("State Animator")]
+    public StateAnimator _StateAnimator;
+     
     IEnumerator HurtingMeActive(Health enemy)
     {
         HurtingMe = enemy;
@@ -44,7 +55,16 @@ public class Health : MonoBehaviour
         HurtingMe = null;
         StopCoroutine(HurtingMeroutine);
     }
-
+    public virtual void Dead()
+    {
+        animator.SetBool("Dead", true);
+        StartCoroutine(DeadDestroy());
+    }
+    IEnumerator DeadDestroy()
+    {
+        yield return new WaitForSecondsRealtime(TimeDestroy);
+        Destroy(this.gameObject);
+    }
     public virtual void Damage(int damage,Health enemy)
     {
         
@@ -77,7 +97,7 @@ public class Health : MonoBehaviour
     public virtual void LoadComponent()
     {
         health = healthMax;
-
+        animator = GetComponent<Animator>();
 
     }
 

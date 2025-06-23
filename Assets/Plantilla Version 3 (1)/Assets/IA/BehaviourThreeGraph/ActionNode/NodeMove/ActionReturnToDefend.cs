@@ -34,6 +34,7 @@ public class ActionReturnToDefend : ActionNodeVehicle
                 if (_IACharacterVehiculo is IACharacterVehiculoGolem golem)
                 {
                     golem.MoveToPosition(golem.InitialPosition);
+                    golem.LookPosition(golem.InitialPosition);
                 }
                 break;
             case UnitGame.None:

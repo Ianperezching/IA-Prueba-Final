@@ -7,7 +7,7 @@ public class IACharacterVehiculoGolem : IACharacterVehiculo
     private float returnThreshold = 0.5f; // Distancia mínima para considerar que llegó a su posición inicial
 
     // Puedes personalizar el comportamiento si lo deseas
-    void Start()
+    void Awake()
     {
         this.LoadComponent();
         initialPosition = transform.position;

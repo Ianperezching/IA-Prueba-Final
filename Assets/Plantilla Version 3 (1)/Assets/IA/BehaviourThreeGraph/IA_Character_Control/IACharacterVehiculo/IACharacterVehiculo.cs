@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class IACharacterVehiculo : IACharacterControl
 {
     protected CalculateDiffuse _CalculateDiffuse;
-    protected float speedRotation = 0;
+    public float speedRotation = 0;
 
     public float RangeWander;
     Vector3 positionWander;

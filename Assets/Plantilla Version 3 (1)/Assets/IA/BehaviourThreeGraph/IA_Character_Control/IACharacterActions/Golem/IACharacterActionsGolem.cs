@@ -5,13 +5,15 @@ public class IACharacterActionsGolem : IACharacterActions
     float FrameRate = 0;
     public float Rate=1;
     public int damageGolem;
-     private void Start()
+     private void Awake()
     {
         LoadComponent();
     }
     public override void LoadComponent()
     {
         base.LoadComponent();
+        Rate = Random.Range(0.5f, 1f);
+        FrameRate = 0;
 
     }
      public void Attack()
