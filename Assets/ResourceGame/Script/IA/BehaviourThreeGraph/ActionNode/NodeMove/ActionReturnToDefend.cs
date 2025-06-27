@@ -24,9 +24,7 @@ public class ActionReturnToDefend : ActionNodeVehicle
             case UnitGame.Zombie:
                
                 break;
-            case UnitGame.Soldier:
-               
-                break;
+             
             case UnitGame.Villager:
                 
                 break;

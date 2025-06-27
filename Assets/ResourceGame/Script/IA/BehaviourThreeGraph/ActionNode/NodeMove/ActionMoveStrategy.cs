@@ -28,13 +28,7 @@ public class ActionMoveStrategy : ActionNodeVehicle
             case UnitGame.Zombie:
                 
                 break;
-            case UnitGame.Soldier:
-                if (_IACharacterVehiculo is IACharacterVehiculoSoldier)
-                {
-                    ((IACharacterVehiculoSoldier)_IACharacterVehiculo).MoveToStrategy();
-                    ((IACharacterVehiculoSoldier)_IACharacterVehiculo).LookEnemy();
-                }
-                break;
+            
             case UnitGame.None:
                 break;
             default:

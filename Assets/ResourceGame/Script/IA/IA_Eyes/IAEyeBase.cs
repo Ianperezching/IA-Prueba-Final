@@ -222,7 +222,7 @@ public class IAEyeBase : MonoBehaviour
     public Transform AimOffset;
     public Health ViewEnemy;
     public Health ViewAllie;// { get; set; }
-
+    public Item ViewItem;
     public Vector3 Target { get; set; }
 
    
@@ -252,6 +252,24 @@ public class IAEyeBase : MonoBehaviour
         get
         {
             return (this.ViewAllie != null) ? (transform.position - this.ViewAllie.transform.position).magnitude : -1;
+        }
+    }
+    public float DistanceItem
+    {
+        get
+        {
+            return (this.ViewItem != null) ? (transform.position - this.ViewItem.transform.position).magnitude : -1;
+        }
+    }
+    public Vector3 DirectionItem
+    {
+        get
+        {
+            if (this.ViewItem != null)
+            {
+                return (this.ViewItem.transform.position - transform.position).normalized;
+            }
+            return Vector3.zero;
         }
     }
     public Vector3 DirectionAllied
@@ -324,6 +342,7 @@ public class IAEyeBase : MonoBehaviour
         if (health.HurtingMe != null) return;
         ViewAllie = null;
         ViewEnemy = null;
+        ViewItem = null;
         Collider[] colliders = Physics.OverlapSphere(transform.position, mainDataView.Distance, mainDataView.Scanlayers);
         CountEnemyView = 0;
         count = colliders.Length;
@@ -348,6 +367,12 @@ public class IAEyeBase : MonoBehaviour
                 {
                     ExtractViewEnemy(ref min_dist, Scanhealth);
                 }
+
+                Item item = obj.GetComponent<Item>();
+                if (item != null && mainDataView.IsInSight(item.AimOffset)) {
+                    ViewItem= item;
+                }
+
 
             }
 

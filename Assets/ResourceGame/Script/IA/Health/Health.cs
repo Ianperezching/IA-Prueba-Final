@@ -7,18 +7,11 @@ public enum TypeAgent { A, B, C, D, E }
 public enum UnitGame
 {
     Zombie,
-    Soldier,
     Villager,
     golem,
     None
 }
-public enum StateAnimator
-{
-    IdleWalkRun,
-    Attack,
-    Dead,
-    None
-}
+
 public class Health : MonoBehaviour
 {
     [Header("imageUI")]
@@ -27,7 +20,8 @@ public class Health : MonoBehaviour
     [Header("CountHealth")]
     public int health;
     public int healthMax;
-
+    public int Armor;
+    public int ArmorMax;
     public bool IsDead { get => (health <= 0); }
 
     [Header("AimOffSet")]
@@ -43,10 +37,17 @@ public class Health : MonoBehaviour
     public bool Importal = false;
     public UnitGame _UnitGame;
     public bool IsCantView=true;
-    protected Animator animator;
     public float TimeDestroy;
-    [Header("State Animator")]
-    public StateAnimator _StateAnimator;
+    public bool activeDead = false;
+    ThirdPersonAnimationBase thirdPersonAnimationBase;
+    public virtual void LoadComponent()
+    {
+        health = healthMax;
+        Armor = ArmorMax;
+        thirdPersonAnimationBase = GetComponent<ThirdPersonAnimationBase>();
+        activeDead = false;
+        UpdateHealthBar();
+    }
      
     IEnumerator HurtingMeActive(Health enemy)
     {
@@ -57,7 +58,8 @@ public class Health : MonoBehaviour
     }
     public virtual void Dead()
     {
-        animator.SetBool("Dead", true);
+        activeDead = true;
+        thirdPersonAnimationBase.Dead();
         StartCoroutine(DeadDestroy());
     }
     IEnumerator DeadDestroy()
@@ -67,21 +69,24 @@ public class Health : MonoBehaviour
     }
     public virtual void Damage(int damage,Health enemy)
     {
-        
+        if (activeDead) return;
         if (Importal) return;
-       
-        if (!IsDead)
-        {
-           
-            if ((health - damage) > 0)
-                health -= damage;
-            else
-                health = 0;
-            UpdateHealthBar();
-            if (enemy != null)
-                HurtingMeroutine = StartCoroutine(HurtingMeActive(enemy));
-        }
+        Armor = Mathf.Clamp(Armor - damage, 0, ArmorMax);
+        if (Armor == 0)
+            health = Mathf.Clamp(health - damage, 0, healthMax);
 
+        thirdPersonAnimationBase.HandleHit();
+
+        UpdateHealthBar();
+        if (enemy != null)
+            HurtingMeroutine = StartCoroutine(HurtingMeActive(enemy));
+
+        if (IsDead)
+        {
+            Dead();
+
+        }
+         
     }
 
     
@@ -94,12 +99,6 @@ public class Health : MonoBehaviour
         }
     }
 
-    public virtual void LoadComponent()
-    {
-        health = healthMax;
-        animator = GetComponent<Animator>();
-
-    }
-
+    
 
 }

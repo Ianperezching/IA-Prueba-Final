@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public class IACharacterVehiculo : IACharacterControl
 {
-    protected CalculateDiffuse _CalculateDiffuse;
+    
     public float speedRotation = 0;
 
     public float RangeWander;
@@ -17,17 +17,8 @@ public class IACharacterVehiculo : IACharacterControl
     {
         base.LoadComponent();
         positionWander = RandoWander(transform.position, RangeWander);
-        _CalculateDiffuse = GetComponent<CalculateDiffuse>();
     }
-    public virtual void LookEnemy()
-    {
-        if (AIEye.ViewEnemy == null) return;
-        Vector3 dir = (AIEye.ViewEnemy.transform.position - transform.position).normalized;
-        Quaternion rot = Quaternion.LookRotation(dir);
-        rot.x = 0;
-        rot.z = 0;
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 50);
-    }
+    
     public virtual void LookPosition(Vector3 position)
     {
 
@@ -40,14 +31,14 @@ public class IACharacterVehiculo : IACharacterControl
     public virtual void LookRotationCollider()
     {
 
-        if (_CalculateDiffuse.Collider)
-        {
-            speedRotation = _CalculateDiffuse.speedRotation;
+        //if (_CalculateDiffuse.Collider)
+        //{
+        //    speedRotation = _CalculateDiffuse.speedRotation;
 
-            Vector3 posNormal = _CalculateDiffuse.hit.point + _CalculateDiffuse.hit.normal * 2;
+        //    Vector3 posNormal = _CalculateDiffuse.hit.point + _CalculateDiffuse.hit.normal * 2;
 
-            LookPosition(posNormal);
-        }
+        //    LookPosition(posNormal);
+        //}
     }
 
     public virtual void MoveToPosition(Vector3 pos)
@@ -57,21 +48,61 @@ public class IACharacterVehiculo : IACharacterControl
     public virtual void MoveToEnemy()
     {
         if (AIEye.ViewEnemy == null) return;
-
-
+        if (_LogicDiffuse != null && AIEye.DistanceEnemy>0)
+        {
+            agent.speed = _LogicDiffuse.SpeedDependDistanceEnemy.CalculateFuzzy(AIEye.DistanceEnemy);
+        }
         MoveToPosition(AIEye.ViewEnemy.transform.position);
     }
     public virtual void MoveToAllied()
     {
         if (AIEye.ViewAllie == null) return;
+        CalculateAgentSpeedAllied();
         MoveToPosition(AIEye.ViewAllie.transform.position);
     }
+
+    private void CalculateAgentSpeedAllied()
+    {
+        if (_LogicDiffuse != null && AIEye.DistanceEnemy > 0)
+        {
+            agent.speed = _LogicDiffuse.SpeedDependDistanceAllied.CalculateFuzzy(AIEye.DistanceAllied);
+        }
+    }
+
+    public virtual void MoveToItem()
+    {
+        if (AIEye.ViewItem == null) return;
+        CalculateAgentSpeedItem();
+        MoveToPosition(AIEye.ViewItem.transform.position);
+    }
+
+    private void CalculateAgentSpeedItem()
+    {
+        if (_LogicDiffuse != null && AIEye.DistanceItem > 0)
+        {
+            agent.speed = _LogicDiffuse.SpeedDependDistancePosition.CalculateFuzzy(AIEye.DistanceItem);
+        }
+    }
+
     public virtual void MoveToEvadEnemy()
     {
         if (AIEye.ViewEnemy == null) return;
+        CalculateAgentSpeedEvadeEnemy();
+
         Vector3 dir = (transform.position - AIEye.ViewEnemy.transform.position).normalized;
         Vector3 newPosition = transform.position + dir * 5f;
         MoveToPosition(newPosition);
+    }
+
+    private void CalculateAgentSpeedEvadeEnemy()
+    {
+        if (_LogicDiffuse != null && AIEye.DistanceEnemy > 0)
+        {
+            if (_LogicDiffuse is LogicDiffuseVillager viller)
+            {
+                agent.speed = viller.EvadeSpeedDistanceEnemy.CalculateFuzzy(AIEye.DistanceEnemy);
+            }
+        }
     }
 
     Vector3 RandoWander(Vector3 position, float range)

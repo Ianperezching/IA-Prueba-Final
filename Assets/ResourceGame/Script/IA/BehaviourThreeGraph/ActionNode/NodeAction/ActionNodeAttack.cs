@@ -34,14 +34,8 @@ public class ActionNodeAttack : ActionNodeAction
                 }
 
                 break;
-            case UnitGame.Soldier:
-                if (_IACharacterActions is IACharacterActionsSoldier)
-                {
-                    ((IACharacterActionsSoldier)_IACharacterActions).Attack();
-                }
-
-                break;
-                 case UnitGame.golem:
+             
+            case UnitGame.golem:
                 if (_IACharacterActions is IACharacterActionsGolem)
                 {
                     ((IACharacterActionsGolem)_IACharacterActions).Attack();

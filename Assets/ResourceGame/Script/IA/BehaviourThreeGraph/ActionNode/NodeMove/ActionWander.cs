@@ -32,18 +32,18 @@ public class ActionWander : ActionNodeVehicle
                 }
 
                 break;
-            case UnitGame.Soldier:
-                if (_IACharacterVehiculo is IACharacterVehiculoSoldier)
-                {
-                    ((IACharacterVehiculoSoldier)_IACharacterVehiculo).MoveToWander();
-
-                }
-                break;
+          
                 case UnitGame.Villager:
                 if (_IACharacterVehiculo is IACharacterVehiculoVillager)
                 {
                     ((IACharacterVehiculoVillager)_IACharacterVehiculo).MoveToWander();
 
+                }
+                break;
+            case UnitGame.golem:
+                if (_IACharacterVehiculo is IACharacterVehiculoGolem golem)
+                {
+                    golem.MoveToWander();
                 }
                 break;
             case UnitGame.None:
